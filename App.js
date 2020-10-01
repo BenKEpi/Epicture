@@ -7,7 +7,9 @@
  */
 
 import React, {Component} from 'react';
+
 import Login from './src/login';
+import GalleryView from "./src/gallery";
 
 import {
   SafeAreaView,
@@ -20,18 +22,45 @@ import {
   Button,
 } from 'react-native';
 
-import {authorize} from 'react-native-app-auth';
-
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isLogged: false,
+      selectedView: 'Login',
+    }
+  }
+
+  setView = (view) => {
+    this.setState({selectedView: view})
+  }
+
+  selectedView = () => {
+    switch (this.state.selectedView) {
+      case 'Login':
+        return <Login callback={this.getResponse.bind(this)}/>
+      case 'Gallery':
+        return <GalleryView />
+    }
+  }
+
+  getResponse(isLogged) {
+    this.setState({isLogged});
+    if (this.state.isLogged === true) {
+      this.setView('Gallery')
+    }
+
+    console.log(this.state.isLogged)
+  }
+
   render() {
     return (
       <>
         <StatusBar barStyles="dark-content" />
         <View style={styles.container}>
-          <Text style={styles.mainText}>Epicture App Test</Text>
-          <Login />
+          { this.selectedView() }
         </View>
       </>
     );

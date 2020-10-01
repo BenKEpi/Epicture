@@ -6,12 +6,6 @@
  * @flow strict-local
  */
 
-import React, {Component} from 'react';
-
-//import {StyleSheet, View, Text, Button, ColorAndroid} from 'react-native';
-
-//import {authorize} from 'react-native-app-auth';
-
 class API {
   constructor() {
     this.accessToken = ''

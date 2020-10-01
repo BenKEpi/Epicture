@@ -8,7 +8,7 @@
 
 import React, {Component} from 'react';
 
-import {StyleSheet, View, Text, Button, ColorAndroid} from 'react-native';
+import {StyleSheet, View, Text, Button} from 'react-native';
 
 import {authorize} from 'react-native-app-auth';
 
@@ -29,6 +29,9 @@ const config = {
 
 export default class Login extends Component {
 
+  theUserIsLogged() {
+    this.props.callback(true)
+  }
   sendRequestLogin = async () => {
     try {
       const result = await authorize(config);
@@ -42,6 +45,7 @@ export default class Login extends Component {
       Store.account_id = result.tokenAdditionalParameters.account_id
       Store.account_username = result.tokenAdditionalParameters.account_username
       Store.tokenType = result.tokenType
+      this.theUserIsLogged()
 
     } catch (error) {
       console.log('Error = ' + error);
