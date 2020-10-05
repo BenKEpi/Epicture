@@ -12,17 +12,14 @@ import Login from './src/login';
 import GalleryView from "./src/gallery";
 
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
-  Text,
-  TouchableOpacity,
   StatusBar,
-  Button,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Provider } from "react-redux";
+import store from "./src/store/store";
 
 export default class App extends Component {
   constructor() {
@@ -31,10 +28,6 @@ export default class App extends Component {
       isLogged: false,
       selectedView: 'Login',
     }
-  }
-
-  setView = (view) => {
-    this.setState({selectedView: view})
   }
 
   selectedView = () => {
@@ -49,20 +42,18 @@ export default class App extends Component {
   getResponse(isLogged) {
     this.setState({isLogged});
     if (this.state.isLogged === true) {
-      this.setView('Gallery')
+      this.setState({selectedView: 'Gallery'})
     }
-
-    console.log(this.state.isLogged)
   }
 
   render() {
     return (
-      <>
+      <Provider store={store}>
         <StatusBar barStyles="dark-content" />
         <View style={styles.container}>
           { this.selectedView() }
         </View>
-      </>
+      </Provider>
     );
   }
 }

@@ -12,7 +12,8 @@ import {StyleSheet, View, Text, Button} from 'react-native';
 
 import {authorize} from 'react-native-app-auth';
 
-import Store from './store'
+import { connect } from 'react-redux';
+
 import Env from  '../env.json'
 
 const config = {
@@ -27,8 +28,7 @@ const config = {
   },
 };
 
-export default class Login extends Component {
-
+class Login extends Component {
   theUserIsLogged() {
     this.props.callback(true)
   }
@@ -36,21 +36,12 @@ export default class Login extends Component {
     try {
       const result = await authorize(config);
       console.log(result);
-      Store.accessToken = result.accessToken
-      Store.accessTokenExpirationDate = result.accessTokenExpirationDate
-      Store.authorizeAdditionalParameters = result.authorizeAdditionalParameters
-      Store.idToken = result.idToken
-      Store.refreshToken = result.refreshToken
-      Store.scopes = result.scopes
-      Store.account_id = result.tokenAdditionalParameters.account_id
-      Store.account_username = result.tokenAdditionalParameters.account_username
-      Store.tokenType = result.tokenType
+      this.props.dispatch({ type: 'ADD_USERINFOS', value: result })
       this.theUserIsLogged()
 
     } catch (error) {
       console.log('Error = ' + error);
     }
-    console.log("Store = ", Store)
   };
 
   render() {
@@ -73,3 +64,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+export default connect()(Login)

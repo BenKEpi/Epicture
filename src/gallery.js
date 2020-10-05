@@ -9,12 +9,22 @@
 import React, {Component} from 'react';
 
 import {StyleSheet, View, Text, Button} from 'react-native';
+import { connect } from 'react-redux';
 
-export default class GalleryView extends Component {
+class GalleryView extends Component {
+    constructor() {
+        super();
+        this.state = {
+            userInfos: {},
+            isLoading: false
+        }
+    }
+
     render() {
+        console.log(this.props.userInfos.accessToken)
         return (
             <View>
-                <Text style={styles.mainText}>Welcome to Gallery View !</Text>
+                <Text style={styles.mainText}>Welcome to Gallery View !{ this.props.username }</Text>
             </View>
         );
     }
@@ -29,3 +39,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 });
+
+const mapStateToProps = (state) => {
+    return {
+        userInfos: state.userInfos,
+        username: state.username,
+        accountId: state.accountId,
+    }
+}
+
+export default connect(mapStateToProps)(GalleryView)
