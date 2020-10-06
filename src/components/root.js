@@ -10,7 +10,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import Login from './login';
-import BottomNavBar from './BottomNavBar';
+import {BottomNavBar} from './BottomNavBar';
 
 import {NavigationContainer} from '@react-navigation/native';
 

@@ -12,15 +12,26 @@ import GalleryComponent from './gallery';
 import SearchComponent from './search';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import TabBar from '../TabBar';
+import {HomeTabBar} from '../TabBar';
+import {Icon, IconElement} from '@ui-kitten/components';
 
-const Tab = createBottomTabNavigator();
+const TestIcon = (style): IconElement => (
+  <Icon {...style} name="person-outline" />
+);
 
-export default function BottomNavBar() {
-  return (
-    <Tab.Navigator tabBar={(props) => <TabBar {...props} />}>
-      <Tab.Screen name="Home" component={GalleryComponent} />
-      <Tab.Screen name="Settings" component={SearchComponent} />
-    </Tab.Navigator>
-  );
-}
+const BottomTab = createBottomTabNavigator();
+
+export const BottomNavBar = () => (
+  <BottomTab.Navigator tabBar={props => <HomeTabBar {...props} />}>
+    <BottomTab.Screen
+      name="Home"
+      component={GalleryComponent}
+      options={{title: 'Home', tabBarIcon: TestIcon}}
+    />
+    <BottomTab.Screen
+      name="Settings"
+      component={SearchComponent}
+      options={{title: 'Settings', tabBarIcon: TestIcon}}
+    />
+  </BottomTab.Navigator>
+);
