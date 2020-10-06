@@ -8,7 +8,14 @@
 
 import React, {Component} from 'react';
 
-import {StyleSheet, View, Button} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 
 import {authorize} from 'react-native-app-auth';
 
@@ -41,26 +48,51 @@ class Login extends Component {
 
   render() {
     return (
-      <View>
-        <Button
-          title="Connexion"
-          style={styles.button}
-          onPress={this.sendRequestLogin}
-        />
+      <View style={styles.container}>
+        <Image source={require('../../img/test.png')} style={styles.image} />
+        <Text style={styles.logo}>EPICTURE</Text>
+        <TouchableOpacity style={styles.button} onPress={this.sendRequestLogin}>
+          <Text style={styles.buttonText}>LOGIN</Text>
+        </TouchableOpacity>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  button: {
+  container: {
+    flex: 1,
+    backgroundColor: '#003f5c',
     alignItems: 'center',
-    backgroundColor: '#FFFFCC',
-    padding: 30,
-    margin: 10,
+    justifyContent: 'center',
   },
-  TitleText: {
+  logo: {
+    fontWeight: 'bold',
+    fontSize: 50,
+    color: '#fb5b5a',
+    marginBottom: 40,
+    textShadowColor: '#fff',
+    textShadowOffset: {width: 5, height: 5},
+  },
+  button: {
+    width: '80%',
+    backgroundColor: '#fb5b5a',
+    borderRadius: 25,
+    height: 50,
     alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 40,
+    marginBottom: 10,
+  },
+  buttonText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: 'white',
+  },
+  image: {
+    width: 200,
+    height: 200,
+    resizeMode: 'contain',
   },
 });
 
