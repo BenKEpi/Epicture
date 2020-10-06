@@ -69,10 +69,12 @@ const styles = StyleSheet.create({
   logo: {
     fontWeight: 'bold',
     fontSize: 50,
+    fontStyle: 'italic',
     color: '#fb5b5a',
     marginBottom: 40,
-    textShadowColor: '#fff',
-    textShadowOffset: {width: 5, height: 5},
+    textShadowColor: 'white',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 5,
   },
   button: {
     width: '80%',
