@@ -21,7 +21,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <ApplicationProvider {...eva} theme={eva.light}>
+        <ApplicationProvider {...eva} theme={eva.dark}>
           <IconRegistry icons={EvaIconsPack} />
           <SafeAreaProvider>
             <RootComponents />

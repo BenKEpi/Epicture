@@ -10,19 +10,29 @@ import React, {Component} from 'react';
 
 import {StyleSheet, View, Text} from 'react-native';
 import {connect} from 'react-redux';
+import env from '../../env.json';
+import Api from '../api';
 
 class GalleryComponent extends Component {
   constructor() {
     super();
     this.state = {
-      userInfos: {},
+      data: {},
       isLoading: false,
     };
+  }
 
+  componentDidMount() {
+    Api.get('/gallery/top/viral/month/0.json')
+      .then((responseData) => {
+        console.log(responseData);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   render() {
-    console.log(this.props.userInfos.accessToken);
     return (
       <View>
         <Text style={styles.mainText}>

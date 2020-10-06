@@ -22,7 +22,7 @@ const TestIcon = (style): IconElement => (
 const BottomTab = createBottomTabNavigator();
 
 export const BottomNavBar = () => (
-  <BottomTab.Navigator tabBar={props => <HomeTabBar {...props} />}>
+  <BottomTab.Navigator tabBar={(props) => <HomeTabBar {...props} />}>
     <BottomTab.Screen
       name="Home"
       component={GalleryComponent}
