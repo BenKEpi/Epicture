@@ -25,7 +25,7 @@ class GalleryComponent extends Component {
   componentDidMount() {
     Api.get('/gallery/top/viral/month/0.json')
       .then((responseData) => {
-        console.log(responseData);
+        this.setState({data: responseData});
       })
       .catch((error) => {
         console.log(error);
