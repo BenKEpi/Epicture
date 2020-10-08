@@ -8,17 +8,18 @@
 
 import React, {Component} from 'react';
 
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, Image} from 'react-native';
 import {connect} from 'react-redux';
 import env from '../../env.json';
 import Api from '../api';
+import {List, ListItem} from '@ui-kitten/components';
 
 class GalleryComponent extends Component {
   constructor() {
     super();
     this.state = {
       data: {},
-      isLoading: false,
+      isLoading: true,
     };
   }
 
@@ -26,18 +27,36 @@ class GalleryComponent extends Component {
     Api.get('/gallery/top/viral/month/0.json')
       .then((responseData) => {
         console.log(responseData);
+        this.setState({data: responseData, isLoading: false});
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
+  renderItem = ({item, index}) => (
+    // <ListItem title={`${item.account_url} ${index + 1}`}>
+    //   <Image style={styles.tinyPicture} source={{uri: item.link}} />
+    // </ListItem>
+    <ListItem>
+      <View>
+        <Image
+          style={styles.tinyPicture}
+          source={{uri: item.link}}
+          resizeMode="cover"
+        />
+      </View>
+    </ListItem>
+  );
+
   render() {
     return (
       <View>
-        <Text style={styles.mainText}>
-          Welcome to Gallery View !{this.props.username}
-        </Text>
+        <List
+          style={styles.container}
+          data={this.state.data.data}
+          renderItem={this.renderItem}
+        />
       </View>
     );
   }
@@ -50,6 +69,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 30,
     textAlign: 'center',
+  },
+  container: {},
+  tinyPicture: {
+    alignSelf: 'center',
+    flex: 1,
+    borderRadius: 75,
   },
 });
 
