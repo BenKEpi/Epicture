@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     color: '#fb5b5a',
     marginBottom: 40,
-    textShadowColor: 'white',
+    textShadowColor: 'black',
     textShadowOffset: { width: 2, height: 2 },
     textShadowRadius: 5,
   },

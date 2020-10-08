@@ -8,12 +8,9 @@
 
 import React, {Component} from 'react';
 import {Text} from 'react-native';
-import {HeaderBar} from '../HeaderBar';
 
-export default class SearchComponent extends Component {
+export default class UploadComponent extends Component {
   render() {
-    return (
-        <HeaderBar/>
-    );
-  };
-};
+    return <Text>Upload !</Text>;
+  }
+}
