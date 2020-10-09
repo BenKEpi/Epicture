@@ -24,9 +24,8 @@ class GalleryComponent extends Component {
   }
 
   componentDidMount() {
-    Api.get('/gallery/top/viral/month/0.json')
+    Api.get('gallery/user/viral/month/0.json')
       .then((responseData) => {
-        console.log(responseData);
         this.setState({data: responseData, isLoading: false});
       })
       .catch((error) => {
@@ -34,20 +33,7 @@ class GalleryComponent extends Component {
       });
   }
 
-  renderItem = ({item, index}) => (
-    // <ListItem title={`${item.account_url} ${index + 1}`}>
-    //   <Image style={styles.tinyPicture} source={{uri: item.link}} />
-    // </ListItem>
-    <ListItem>
-      <View>
-        <Image
-          style={styles.tinyPicture}
-          source={{uri: item.link}}
-          resizeMode="cover"
-        />
-      </View>
-    </ListItem>
-  );
+  renderItem = ({item}) => <RenderGallery elem={item} />;
 
   render() {
     return (
@@ -62,6 +48,44 @@ class GalleryComponent extends Component {
   }
 }
 
+class RenderGallery extends Component {
+  constructor() {
+    super();
+    this.state = {
+      image: null,
+      selectedView: '',
+    };
+  }
+
+  selectedView = () => {
+    if (this.props.elem.is_album === true) {
+      return (
+        <Image
+          style={styles.tinyPicture}
+          source={{uri: this.props.elem.images[0].link}}
+        />
+      );
+    } else {
+      return (
+        <Image
+          style={styles.tinyPicture}
+          source={{uri: this.props.elem.link}}
+        />
+      );
+    }
+  };
+
+  render() {
+    return (
+      <View>
+        {this.selectedView()}
+        <Text>{this.props.elem.is_album}</Text>
+        <Text>{this.props.elem.account_url}</Text>
+      </View>
+    );
+  }
+}
+
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 25,
@@ -70,11 +94,12 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     textAlign: 'center',
   },
-  container: {},
   tinyPicture: {
     alignSelf: 'center',
     flex: 1,
-    borderRadius: 75,
+    borderRadius: 10,
+    width: '90%',
+    height: 300,
   },
 });
 
