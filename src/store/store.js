@@ -21,8 +21,8 @@ function reducerLoginInfo(state = initialState, action) {
       return {
         ...state,
         userInfos: action.value,
-        username: action.value.tokenAdditionalParameters.account_username,
-        accountId: action.value.tokenAdditionalParameters.account_id,
+        username: action.value.params.account_username,
+        accountId: action.value.params.account_id,
         isLogged: true,
       };
     default:

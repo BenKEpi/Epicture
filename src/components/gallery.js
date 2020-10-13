@@ -10,9 +10,9 @@ import React, {Component} from 'react';
 
 import {StyleSheet, View, Text, Image} from 'react-native';
 import {connect} from 'react-redux';
-import env from '../../env.json';
 import Api from '../api';
-import {List, ListItem} from '@ui-kitten/components';
+import {List} from '@ui-kitten/components';
+import {ActivityIndicator} from "react-native-web";
 
 class GalleryComponent extends Component {
   constructor() {
@@ -24,8 +24,9 @@ class GalleryComponent extends Component {
   }
 
   componentDidMount() {
-    Api.get('gallery/user/viral/month/0.json')
+    Api.get('gallery/hot/viral/month/0.json')
       .then((responseData) => {
+        console.log("Response Data = ", responseData)
         this.setState({data: responseData, isLoading: false});
       })
       .catch((error) => {
@@ -33,18 +34,34 @@ class GalleryComponent extends Component {
       });
   }
 
-  renderItem = ({item}) => <RenderGallery elem={item} />;
+  renderItem = ({item}) => {
+    if (
+      (item.is_album === true && item.images[0].type === 'video/mp4') ||
+      item.type === 'video/mp4'
+    ) {
+    return <View></View>;
+    } else {
+      return <RenderGallery elem={item} />;
+    }
+  };
 
   render() {
-    return (
-      <View>
-        <List
-          style={styles.container}
-          data={this.state.data.data}
-          renderItem={this.renderItem}
-        />
-      </View>
-    );
+    if (this.state.isLoading) {
+      return (
+        <View>
+          <Text>Loading...</Text>
+        </View>
+      )
+    } else {
+      return (
+        <View>
+          <List
+            data={this.state.data.data}
+            renderItem={this.renderItem}
+          />
+        </View>
+      );
+    }
   }
 }
 
@@ -63,6 +80,7 @@ class RenderGallery extends Component {
         <Image
           style={styles.tinyPicture}
           source={{uri: this.props.elem.images[0].link}}
+          resizeMode="contain"
         />
       );
     } else {
@@ -79,7 +97,6 @@ class RenderGallery extends Component {
     return (
       <View>
         {this.selectedView()}
-        <Text>{this.props.elem.is_album}</Text>
         <Text>{this.props.elem.account_url}</Text>
       </View>
     );
@@ -99,7 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 10,
     width: '90%',
-    height: 300,
+    height: 400,
   },
 });
 

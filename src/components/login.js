@@ -17,39 +17,31 @@ import {
   Image,
 } from 'react-native';
 
-import {authorize} from 'react-native-app-auth';
+import * as AuthSession from 'expo-auth-session';
 
 import {connect} from 'react-redux';
 
 import Env from '../../env.json';
 
-const config = {
-  issuer: Env.baseURL,
-  clientId: Env.clientId,
-  clientSecret: Env.clientSecret,
-  redirectUrl: 'com.epicture://callback',
-  serviceConfiguration: {
-    authorizationEndpoint: 'https://api.imgur.com/oauth2/authorize',
-    tokenEndpoint: 'https://api.imgur.com/oauth2/token',
-    revocationEndpoint: 'https://api.imgur.com/oauth2/revoke',
-  },
-};
-
 class Login extends Component {
   sendRequestLogin = async () => {
-    try {
-      const result = await authorize(config);
-      console.log(result);
+    const redirect_uri = AuthSession.makeRedirectUri();
+    const result = await AuthSession.startAsync({
+      authUrl: `https://api.imgur.com/oauth2/authorize?client_id=${Env.clientId}&response_type=token`,
+      returnUrl: redirect_uri
+    });
+
+    if (result.type === 'success') {
       this.props.dispatch({type: 'ADD_USERINFOS', value: result});
-    } catch (error) {
-      console.log('Error = ' + error);
+    } else {
+      console.log("Error in Login.js")
     }
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Image source={require('../../img/test.png')} style={styles.image} />
+        <Image source={require('../../assets/test.png')} style={styles.image} />
         <Text style={styles.logo}>EPICTURE</Text>
         <TouchableOpacity style={styles.button} onPress={this.sendRequestLogin}>
           <Text style={styles.buttonText}>LOGIN</Text>
@@ -73,7 +65,7 @@ const styles = StyleSheet.create({
     color: '#fb5b5a',
     marginBottom: 40,
     textShadowColor: 'black',
-    textShadowOffset: { width: 2, height: 2 },
+    textShadowOffset: {width: 2, height: 2},
     textShadowRadius: 5,
   },
   button: {

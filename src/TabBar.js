@@ -34,7 +34,6 @@ export const HomeTabBar = (props) => {
 
   return (
     <View>
-      <Divider />
       <BottomNavigation
         appearance="noIndicator"
         selectedIndex={props.state.index}

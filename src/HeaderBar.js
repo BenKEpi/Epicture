@@ -12,7 +12,7 @@ import {TopNavigation, Icon, IconElement, TopNavigationAction} from '@ui-kitten/
 
 const photoDevice = () => {
   console.log('Photo');
-}
+};
 
 const PhotoIcon = (style): IconElement => (
   <Icon {...style} name="camera-outline" />
