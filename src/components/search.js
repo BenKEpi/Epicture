@@ -7,13 +7,10 @@
  */
 
 import React, {Component} from 'react';
-import {Text} from 'react-native';
 import {HeaderBar} from '../HeaderBar';
 
 export default class SearchComponent extends Component {
   render() {
-    return (
-        <HeaderBar/>
-    );
-  };
-};
+    return <HeaderBar />;
+  }
+}
