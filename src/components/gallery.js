@@ -11,8 +11,9 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Text, Image} from 'react-native';
 import {connect} from 'react-redux';
 import Api from '../api';
-import {List} from '@ui-kitten/components';
-import {ActivityIndicator} from "react-native-web";
+import {Icon, IconElement, List, Spinner} from '@ui-kitten/components'
+
+import CardImageComponent from "./card";
 
 class GalleryComponent extends Component {
   constructor() {
@@ -26,7 +27,6 @@ class GalleryComponent extends Component {
   componentDidMount() {
     Api.get('gallery/hot/viral/month/0.json')
       .then((responseData) => {
-        console.log("Response Data = ", responseData)
         this.setState({data: responseData, isLoading: false});
       })
       .catch((error) => {
@@ -39,9 +39,9 @@ class GalleryComponent extends Component {
       (item.is_album === true && item.images[0].type === 'video/mp4') ||
       item.type === 'video/mp4'
     ) {
-    return <View></View>;
+      return <View/>;
     } else {
-      return <RenderGallery elem={item} />;
+      return <CardImageComponent elem={item} />;
     }
   };
 
@@ -49,7 +49,7 @@ class GalleryComponent extends Component {
     if (this.state.isLoading) {
       return (
         <View>
-          <Text>Loading...</Text>
+          <Spinner />
         </View>
       )
     } else {
@@ -65,44 +65,6 @@ class GalleryComponent extends Component {
   }
 }
 
-class RenderGallery extends Component {
-  constructor() {
-    super();
-    this.state = {
-      image: null,
-      selectedView: '',
-    };
-  }
-
-  selectedView = () => {
-    if (this.props.elem.is_album === true) {
-      return (
-        <Image
-          style={styles.tinyPicture}
-          source={{uri: this.props.elem.images[0].link}}
-          resizeMode="contain"
-        />
-      );
-    } else {
-      return (
-        <Image
-          style={styles.tinyPicture}
-          source={{uri: this.props.elem.link}}
-        />
-      );
-    }
-  };
-
-  render() {
-    return (
-      <View>
-        {this.selectedView()}
-        <Text>{this.props.elem.account_url}</Text>
-      </View>
-    );
-  }
-}
-
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 25,
@@ -110,13 +72,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 30,
     textAlign: 'center',
-  },
-  tinyPicture: {
-    alignSelf: 'center',
-    flex: 1,
-    borderRadius: 10,
-    width: '90%',
-    height: 400,
   },
 });
 

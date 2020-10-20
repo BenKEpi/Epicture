@@ -8,7 +8,7 @@
 
 import React from 'react';
 
-import GalleryComponent from './gallery';
+import TopBarGallery from "./galleryNavigation";
 import SearchComponent from './search';
 import UploadComponent from './upload';
 
@@ -34,7 +34,7 @@ export const BottomNavBar = () => (
   <BottomTab.Navigator tabBar={(props) => <HomeTabBar {...props} />}>
     <BottomTab.Screen
       name="Home"
-      component={GalleryComponent}
+      component={TopBarGallery}
       options={{title: 'Home', tabBarIcon: HomeIcon}}
     />
     <BottomTab.Screen

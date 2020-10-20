@@ -12,7 +12,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   TouchableOpacity,
   Image,
 } from 'react-native';
@@ -22,6 +21,8 @@ import * as AuthSession from 'expo-auth-session';
 import {connect} from 'react-redux';
 
 import Env from '../../env.json';
+import {SafeAreaView} from "react-native-safe-area-context";
+import { Button } from "@ui-kitten/components";
 
 class Login extends Component {
   sendRequestLogin = async () => {

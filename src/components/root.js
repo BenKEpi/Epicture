@@ -13,6 +13,7 @@ import Login from './login';
 import {BottomNavBar} from './BottomNavBar';
 
 import {NavigationContainer} from '@react-navigation/native';
+import {SafeAreaView} from "react-native-safe-area-context";
 
 class RootComponents extends Component {
   constructor() {
