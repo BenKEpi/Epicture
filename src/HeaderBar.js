@@ -7,11 +7,14 @@
  */
 
 import React from 'react';
-import {View, Alert} from 'react-native';
-import {TopNavigation, Icon, IconElement, TopNavigationAction} from '@ui-kitten/components';
+import {View, Alert, StyleSheet, SafeAreaView} from 'react-native';
+import {TopNavigation, Layout, Icon, IconElement, TopNavigationAction} from '@ui-kitten/components';
+import {createStackNavigator} from '@react-navigation/stack'
+import CameraOpen from "./components/camera";
 
-const photoDevice = () => {
-  console.log('Photo');
+const GetCamera = () => {
+    console.log("Pute");
+    return <CameraOpen />
 };
 
 const AlertLogout = () => {
@@ -37,7 +40,7 @@ const LogoutIcon = (style): IconElement => (
 );
 
 const UploadPhoto = () => (
-  <TopNavigationAction icon={PhotoIcon} onPress={photoDevice} />
+  <TopNavigationAction icon={PhotoIcon} />
 );
 
 const Logout = () => (
@@ -46,11 +49,13 @@ const Logout = () => (
 
 export const HeaderBar = () => {
   return (
-    <TopNavigation
-      title="EPICTURE"
-      alignment="center"
-      accessoryRight={UploadPhoto}
-      accessoryLeft={Logout}
-    />
+      <SafeAreaView>
+        <TopNavigation
+        title="EPICTURE"
+        alignment="center"
+        accessoryRight={UploadPhoto}
+        accessoryLeft={Logout}
+      />
+      </SafeAreaView>
   );
 };
