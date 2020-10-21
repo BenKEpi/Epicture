@@ -21,4 +21,16 @@ module.exports = {
       return result.json();
     });
   },
+  post(url, accessToken) {
+    return fetch(env.baseURL + url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + accessToken,
+      },
+    }).then((result) => {
+      return result.json();
+    });
+  }
 };

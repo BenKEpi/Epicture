@@ -9,37 +9,69 @@
 import React, {Component} from 'react';
 import {View, Image, StyleSheet, Text, Dimensions} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
-import {Avatar, Button, Divider, Icon, IconElement} from "@ui-kitten/components";
+import {Avatar, Button, Icon, IconElement, Layout} from "@ui-kitten/components";
 import Api from '../api';
+import {connect} from "react-redux";
 
-const FavIcon = (style): IconElement => (
-  <Icon {...style} name="heart-outline" />
+const IconFavorited = (props): IconElement => (
+  <Icon {...props} name="heart" />
 );
 
+const IconUnfavorited = (props): IconElement => (
+  <Icon {...props} name="heart-outline" />
+);
 
-export default class CardImageComponent extends Component {
-  constructor() {
-    super();
+const IconUpsOut = (props): IconElement => (
+  <Icon {...props} name="arrow-circle-up-outline" />
+);
+
+const IconUps = (props): IconElement => (
+  <Icon {...props} name="arrow-circle-up" />
+);
+
+const IconDownOut = (props): IconElement => (
+  <Icon {...props} name="arrow-circle-down-outline" />
+);
+
+const IconDown = (props): IconElement => (
+  <Icon {...props} name="arrow-circle-down" />
+);
+
+class CardImageComponent extends Component {
+  _isMounted = false;
+
+  constructor(props) {
+    super(props);
     this.state = {
       imgUrl: null,
       imgWidth: null,
       imgHeight: null,
+      imgId: null,
       description: null,
       avatarUrl: null,
-      selectedView: '',
       isLoading: true,
+      isFavorited: false,
+      isVote: 'veto',
     }
   }
 
   componentDidMount() {
-    this.getImageUrl();
-    Api.get('account/' + this.props.elem.account_url + '/avatar')
-      .then((responseData) => {
-        this.setState({avatarUrl: responseData.data.avatar});
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    this._isMounted = true;
+
+    if (this._isMounted) {
+      this.getImageUrl();
+      Api.get('account/' + this.props.elem.account_url + '/avatar')
+        .then((responseData) => {
+          this.setState({avatarUrl: responseData.data.avatar});
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   getImageUrl = () => {
@@ -58,38 +90,70 @@ export default class CardImageComponent extends Component {
         description: this.props.elem.description,
       });
     }
+    this.setState({imgId: this.props.elem.cover})
+    this.setState({isFavorited: this.props.elem.favorite})
+    this.setState({isVote: this.props.elem.vote})
   }
 
-  getImageSize = () => {
-    let imageWidth = null;
-    let imageHeight = null;
-    let newHeight = null;
-    let newWidth = null;
-    let windowSize = Dimensions.get('window');
-    let widthMax = windowSize.width - 40;
+  postInFavorite = () => {
+    Api.post('image/' + this.state.imgId + '/favorite', this.props.userInfos.params.access_token)
+      .then((responseData) => {
+        if (responseData.data === 'favorited') {
+          this.setState({isFavorited: true})
+        } else {
+          this.setState({isFavorited: false})
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  };
 
-    imageWidth = this.props.data.cover_width;
-    if (this.props.data.cover_width === undefined)
-      imageWidth = this.props.data.width;
-
-    imageHeight = this.props.data.cover_height;
-    if (this.props.data.cover_height === undefined)
-      imageHeight = this.props.data.height;
-
-    newWidth = widthMax;
-    if (imageHeight === undefined || imageWidth === undefined) {
-      newHeight = newWidth;
-    } else {
-      this.coef = imageHeight / imageWidth
-      newHeight = widthMax * this.coef
+  postVote = (vote) => {
+    if (this.state.isVote !== 'veto') {
+      vote = 'veto';
     }
-    this.setState({imgHeight: newHeight, imageWidth: newWidth});
+    Api.post('gallery/' + this.state.imgId + '/vote/' + vote, this.props.userInfos.params.access_token)
+      .then((responseData) => {
+        console.log(vote, ' ', responseData);
+        if (vote === 'up') {
+          this.setState({isVote: 'up'})
+        } else if (vote === 'down') {
+          this.setState({isVote: 'down'})
+        } else {
+          this.setState({isVote: 'veto'})
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  };
+
+  selectedIconFav= () => {
+    switch (this.state.isFavorited) {
+      case true:
+        return IconFavorited;
+      case false:
+        return IconUnfavorited;
+    }
   }
 
-  handleImageLoading() {
-    setInterval(() => {
-      this.setState({isLoading: false})
-    }, 4000);
+  selectedIconUps = () => {
+    switch (this.state.isVote) {
+      case 'up':
+        return IconUps;
+      default:
+        return IconUpsOut;
+    }
+  }
+
+  selectedIconDowns = () => {
+    switch (this.state.isVote) {
+      case 'down':
+        return IconDown;
+      default:
+        return IconDownOut;
+    }
   }
 
   render() {
@@ -108,10 +172,14 @@ export default class CardImageComponent extends Component {
             </View>
           </View>
         </View>
-        <Image style={styles.tinyPicture} source={{uri: this.state.imgUrl, width: this.state.imgWidth, height: this.state.imgHeight}} resizeMode="stretch"/>
+        <Image style={styles.tinyPicture} source={{uri: this.state.imgUrl}} resizeMode="stretch"/>
         <View style={styles.lowerCard}>
           <Text style={styles.textDescription}>{this.state.description}</Text>
-          <Icon style={styles.icons} fill='white' name="heart-outline" />
+          <Layout style={styles.lowerTitle}>
+            <Button title='ups' appearance='ghost' status='success' accessoryLeft={this.selectedIconUps()} onPress={this.postVote('up')}>{this.props.elem.ups}</Button>
+            <Button title='down' appearance='ghost' status='danger' accessoryLeft={this.selectedIconDowns()} onPress={this.postVote('down')}>{this.props.elem.downs}</Button>
+            <Button title='favorite' appearance='ghost' status='info' accessoryLeft={this.selectedIconFav()} onPress={this.postInFavorite}>{this.props.elem.favorite_count}</Button>
+          </Layout>
         </View>
       </View>
     );
@@ -177,3 +245,11 @@ const styles = StyleSheet.create({
     height: 25,
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    userInfos: state.userInfos,
+  };
+};
+
+export default connect(mapStateToProps)(CardImageComponent);
