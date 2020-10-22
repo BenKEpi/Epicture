@@ -10,8 +10,8 @@ import React, {Component} from 'react';
 
 import {StyleSheet, View, Text, Image} from 'react-native';
 import {connect} from 'react-redux';
-import Api from '../api';
-import {Icon, IconElement, List, Spinner} from '@ui-kitten/components'
+import Api from '../../api';
+import {List, Spinner} from '@ui-kitten/components'
 
 import CardImageComponent from "./card";
 

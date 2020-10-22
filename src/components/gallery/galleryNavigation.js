@@ -8,14 +8,12 @@
 
 import React, {Component} from 'react';
 
-import {StyleSheet, View, Text, Image} from 'react-native';
-import {connect} from 'react-redux';
-import Api from '../api';
-import {List, Spinner, Tab, TabBar} from '@ui-kitten/components'
+import {Tab, TabBar} from '@ui-kitten/components'
 
 import {SafeAreaView} from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
 import GalleryComponent from "./gallery";
+import FavoriteComponent from "./favorite";
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -48,7 +46,7 @@ export default class TopBarGallery extends Component {
         tabBar={props => <TopTabBar {...props}/>}
       >
         <TopTab.Screen name="Most Viral" component={GalleryComponent} />
-        <TopTab.Screen name="Feed" component={GalleryComponent} />
+        <TopTab.Screen name="Feed" component={FavoriteComponent} />
       </TopTab.Navigator>
     )
   }

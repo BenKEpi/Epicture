@@ -7,35 +7,11 @@
  */
 
 import React, {Component} from 'react';
-import {View, Image, StyleSheet, Text, Dimensions} from "react-native";
-import {SafeAreaView} from "react-native-safe-area-context";
-import {Avatar, Button, Icon, IconElement, Layout} from "@ui-kitten/components";
-import Api from '../api';
+import {View, Image, StyleSheet, Text} from "react-native";
+import {Avatar, Button, Icon, Layout} from "@ui-kitten/components";
+import Api from '../../api';
 import {connect} from "react-redux";
-
-const IconFavorited = (props): IconElement => (
-  <Icon {...props} name="heart" />
-);
-
-const IconUnfavorited = (props): IconElement => (
-  <Icon {...props} name="heart-outline" />
-);
-
-const IconUpsOut = (props): IconElement => (
-  <Icon {...props} name="arrow-circle-up-outline" />
-);
-
-const IconUps = (props): IconElement => (
-  <Icon {...props} name="arrow-circle-up" />
-);
-
-const IconDownOut = (props): IconElement => (
-  <Icon {...props} name="arrow-circle-down-outline" />
-);
-
-const IconDown = (props): IconElement => (
-  <Icon {...props} name="arrow-circle-down" />
-);
+import {IconFavorited, IconUnfavorited, IconUpsOut, IconUps, IconDownOut, IconDown} from "../Icons"
 
 class CardImageComponent extends Component {
   _isMounted = false;
@@ -44,8 +20,6 @@ class CardImageComponent extends Component {
     super(props);
     this.state = {
       imgUrl: null,
-      imgWidth: null,
-      imgHeight: null,
       imgId: null,
       description: null,
       avatarUrl: null,
@@ -75,24 +49,23 @@ class CardImageComponent extends Component {
   }
 
   getImageUrl = () => {
-    if (this.props.elem.is_album) {
+    this.setState({
+      isFavorited: this.props.elem.favorite,
+      isVote: this.props.elem.vote
+    })
+    if (this.props.elem.is_album && !this.props.elem.favorite) {
       this.setState({
+        imgId: this.props.elem.images[0].id,
         imgUrl: this.props.elem.images[0].link,
-        imgHeight: this.props.elem.images[0].height,
-        imgWidth: this.props.elem.images[0].width,
         description: this.props.elem.images[0].description,
       });
     } else {
       this.setState({
+        imgId: this.props.elem.id,
         imgUrl: this.props.elem.link,
-        imgHeight: this.props.elem.height,
-        imgWidth: this.props.elem.width,
         description: this.props.elem.description,
       });
     }
-    this.setState({imgId: this.props.elem.cover})
-    this.setState({isFavorited: this.props.elem.favorite})
-    this.setState({isVote: this.props.elem.vote})
   }
 
   postInFavorite = () => {
@@ -110,18 +83,25 @@ class CardImageComponent extends Component {
   };
 
   postVote = (vote) => {
-    if (this.state.isVote !== 'veto') {
-      vote = 'veto';
+    let value = vote
+    if (this.state.isVote === vote) {
+      value = 'veto';
     }
-    Api.post('gallery/' + this.state.imgId + '/vote/' + vote, this.props.userInfos.params.access_token)
+    Api.post('gallery/' + this.state.imgId + '/vote/' + value, this.props.userInfos.params.access_token)
       .then((responseData) => {
-        console.log(vote, ' ', responseData);
-        if (vote === 'up') {
+        console.log(value, ' ', responseData);
+        if (value === 'up') {
           this.setState({isVote: 'up'})
-        } else if (vote === 'down') {
+          this.props.elem.ups += 1;
+        } else if (value === 'down') {
           this.setState({isVote: 'down'})
+          this.props.elem.downs += 1
         } else {
           this.setState({isVote: 'veto'})
+          if (vote ==='up')
+            this.props.elem.ups = this.props.elem.ups - 1;
+          if (vote === 'down')
+            this.props.elem.downs = this.props.elem.downs - 1;
         }
       })
       .catch((error) => {
@@ -176,8 +156,8 @@ class CardImageComponent extends Component {
         <View style={styles.lowerCard}>
           <Text style={styles.textDescription}>{this.state.description}</Text>
           <Layout style={styles.lowerTitle}>
-            <Button title='ups' appearance='ghost' status='success' accessoryLeft={this.selectedIconUps()} onPress={this.postVote('up')}>{this.props.elem.ups}</Button>
-            <Button title='down' appearance='ghost' status='danger' accessoryLeft={this.selectedIconDowns()} onPress={this.postVote('down')}>{this.props.elem.downs}</Button>
+            <Button title='ups' appearance='ghost' status='success' accessoryLeft={this.selectedIconUps()} onPress={() => this.postVote('up')}>{this.props.elem.ups}</Button>
+            <Button title='down' appearance='ghost' status='danger' accessoryLeft={this.selectedIconDowns()} onPress={() => this.postVote('down')}>{this.props.elem.downs}</Button>
             <Button title='favorite' appearance='ghost' status='info' accessoryLeft={this.selectedIconFav()} onPress={this.postInFavorite}>{this.props.elem.favorite_count}</Button>
           </Layout>
         </View>
@@ -228,6 +208,7 @@ const styles = StyleSheet.create({
   lowerTitle: {
     flexDirection: "row",
     justifyContent: 'space-between',
+    borderRadius: 40,
   },
   test:{
     flexDirection: 'row',
