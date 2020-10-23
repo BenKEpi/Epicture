@@ -7,25 +7,23 @@
  */
 
 import React, {Component} from 'react';
-
-import {StyleSheet, View, Text, Image} from 'react-native';
-import {connect} from 'react-redux';
-import Api from '../../api';
-import {List, Spinner} from '@ui-kitten/components'
-
+import Api from "../../api";
+import {View} from "react-native";
 import CardImageComponent from "./card";
+import {List, Spinner} from "@ui-kitten/components";
+import {connect} from "react-redux";
 
-class GalleryComponent extends Component {
-  constructor() {
-    super();
+class FeedComponent extends Component {
+  constructor(props) {
+    super(props);
     this.state = {
       data: {},
       isLoading: true,
-    };
+    }
   }
 
   componentDidMount() {
-    Api.get('gallery/hot/viral/month/0')
+    Api.get('gallery/user/rising/month/0')
       .then((responseData) => {
         this.setState({data: responseData, isLoading: false});
       })
@@ -35,14 +33,7 @@ class GalleryComponent extends Component {
   }
 
   renderItem = ({item}) => {
-    if (
-      (item.is_album === true && item.images[0].type === 'video/mp4') ||
-      item.type === 'video/mp4'
-    ) {
-      return <View/>;
-    } else {
-      return <CardImageComponent elem={item} />;
-    }
+    return <CardImageComponent elem={item} />;
   };
 
   render() {
@@ -51,7 +42,7 @@ class GalleryComponent extends Component {
         <View>
           <Spinner />
         </View>
-      )
+      );
     } else {
       return (
         <View>
@@ -65,16 +56,6 @@ class GalleryComponent extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  mainText: {
-    fontSize: 25,
-    color: '#333',
-    fontWeight: 'bold',
-    marginBottom: 30,
-    textAlign: 'center',
-  },
-});
-
 const mapStateToProps = (state) => {
   return {
     userInfos: state.userInfos,
@@ -83,4 +64,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(GalleryComponent);
+export default connect(mapStateToProps)(FeedComponent);

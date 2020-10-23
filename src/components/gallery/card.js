@@ -73,8 +73,10 @@ class CardImageComponent extends Component {
       .then((responseData) => {
         if (responseData.data === 'favorited') {
           this.setState({isFavorited: true})
+          this.props.elem.favorite_count -= 1;
         } else {
           this.setState({isFavorited: false})
+          this.props.elem.favorite_count += 1;
         }
       })
       .catch((error) => {
@@ -89,19 +91,21 @@ class CardImageComponent extends Component {
     }
     Api.post('gallery/' + this.state.imgId + '/vote/' + value, this.props.userInfos.params.access_token)
       .then((responseData) => {
-        console.log(value, ' ', responseData);
-        if (value === 'up') {
-          this.setState({isVote: 'up'})
-          this.props.elem.ups += 1;
-        } else if (value === 'down') {
-          this.setState({isVote: 'down'})
-          this.props.elem.downs += 1
+        console.log(value, responseData);
+        this.setState({isVote: value})
+        if (value === 'veto') {
+          if (vote === 'up') {
+            this.props.elem.ups += 1;
+          } else {
+            this.props.elem.downs += 1;
+          }
         } else {
-          this.setState({isVote: 'veto'})
-          if (vote ==='up')
-            this.props.elem.ups = this.props.elem.ups - 1;
-          if (vote === 'down')
-            this.props.elem.downs = this.props.elem.downs - 1;
+          if (value === 'up') {
+            console.log("WTF !")
+            this.props.elem.ups -= 1;
+          } else {
+            this.props.elem.downs -= 1;
+          }
         }
       })
       .catch((error) => {

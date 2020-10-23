@@ -7,14 +7,10 @@
  */
 
 import React from 'react';
-import {View} from 'react-native';
 import {
   BottomNavigation,
   BottomNavigationTab,
-  Divider,
-  BottomNavigationTabElement,
 } from '@ui-kitten/components';
-import {SafeAreaView} from "react-native-safe-area-context";
 
 export const HomeTabBar = (props) => {
   const onSelect = (index: number): void => {
@@ -25,11 +21,11 @@ export const HomeTabBar = (props) => {
   const createNavigationTabForRoute = (route) => {
     const {options} = props.descriptors[route.key];
     return (
-      <BottomNavigationTab
-        key={route.key}
-        title={options.title}
-        icon={options.tabBarIcon}
-      />
+        <BottomNavigationTab
+          key={route.key}
+          title={options.title}
+          icon={options.tabBarIcon}
+        />
     );
   };
 

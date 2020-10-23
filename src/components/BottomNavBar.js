@@ -8,26 +8,13 @@
 
 import React from 'react';
 
-import TopBarGallery from "./gallery/galleryNavigation";
+import {TopTitle} from "./gallery/galleryNavigation";
 import SearchComponent from './search';
 import UploadComponent from './upload';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {HomeTabBar} from '../TabBar';
-import {Icon, IconElement} from '@ui-kitten/components';
-import search from "./search";
-
-const ProfileIcon = (style): IconElement => (
-  <Icon {...style} name="person-outline" />
-);
-
-const HomeIcon = (style): IconElement => (
-  <Icon {...style} name="monitor-outline" />
-);
-
-const UploadIcon = (style): IconElement => (
-  <Icon {...style} name="cloud-upload-outline" />
-);
+import {SearchIcon, HomeIcon, ProfileIcon, UploadIcon} from "./Icons";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -35,9 +22,14 @@ export const BottomNavBar = () => (
   <BottomTab.Navigator tabBar={(props) => <HomeTabBar {...props} />}>
     <BottomTab.Screen
       name="Home"
-      component={TopBarGallery}
+      component={TopTitle}
       options={{title: 'Home', tabBarIcon: HomeIcon}}
     />
+      <BottomTab.Screen
+        name="Search"
+        component={UploadComponent}
+        options={{title: 'Search', tabBarIcon: SearchIcon}}
+      />
     <BottomTab.Screen
       name="Upload"
       component={UploadComponent}
