@@ -6,16 +6,9 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import {View, Alert, StyleSheet, SafeAreaView} from 'react-native';
+import React, {Component} from 'react';
+import {View, Alert, StyleSheet, SafeAreaView, Button, Platform} from 'react-native';
 import {TopNavigation, Layout, Icon, IconElement, TopNavigationAction} from '@ui-kitten/components';
-import {createStackNavigator} from '@react-navigation/stack'
-import CameraOpen from "./components/camera";
-
-const GetCamera = () => {
-    console.log("Pute");
-    return <CameraOpen />
-};
 
 const AlertLogout = () => {
   Alert.alert(
@@ -31,31 +24,31 @@ const AlertLogout = () => {
   );
 }
 
-const PhotoIcon = (style): IconElement => (
-  <Icon {...style} name="camera-outline" />
-);
-
 const LogoutIcon = (style): IconElement => (
-  <Icon {...style} name="log-out-outline" />
-);
-
-const UploadPhoto = () => (
-  <TopNavigationAction icon={PhotoIcon} />
+    <Icon {...style} name="log-out-outline"/>
 );
 
 const Logout = () => (
-  <TopNavigationAction icon={LogoutIcon} onPress={AlertLogout} />
-);
+        <TopNavigationAction icon={LogoutIcon} onPress={AlertLogout}/>
+    );
 
-export const HeaderBar = () => {
-  return (
-      <SafeAreaView>
-        <TopNavigation
-        title="EPICTURE"
-        alignment="center"
-        accessoryRight={UploadPhoto}
-        accessoryLeft={Logout}
-      />
-      </SafeAreaView>
-  );
-};
+export default class HeaderBar extends Component {
+  render() {
+    return (
+        <SafeAreaView style={styles.navbar}>
+          <TopNavigation
+              title="EPICTURE"
+              alignment="center"
+              accessoryLeft={Logout}
+          />
+        </SafeAreaView>
+    );
+  };
+}
+
+const styles = StyleSheet.create({
+  navbar: {
+    flex: 1,
+    paddingTop: Platform.OS === 'android' ? 48 : 0
+  },
+});

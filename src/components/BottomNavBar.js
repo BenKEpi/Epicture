@@ -8,13 +8,14 @@
 
 import React from 'react';
 
-import TopBarGallery from "./galleryNavigation";
+import TopBarGallery from "./gallery/galleryNavigation";
 import SearchComponent from './search';
 import UploadComponent from './upload';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {HomeTabBar} from '../TabBar';
 import {Icon, IconElement} from '@ui-kitten/components';
+import search from "./search";
 
 const ProfileIcon = (style): IconElement => (
   <Icon {...style} name="person-outline" />

@@ -7,10 +7,17 @@
  */
 
 import React, {Component} from 'react';
-import {Text} from 'react-native';
+import {SafeAreaView, Text} from 'react-native';
+import HeaderUpload from "./HeaderUpload";
+import CameraOpen from "./camera";
 
 export default class UploadComponent extends Component {
   render() {
-    return <Text>Upload !</Text>;
+    return (
+        <SafeAreaView style={{flex: 1}}>
+          <HeaderUpload />
+          <CameraOpen />
+        </SafeAreaView>
+    );
   }
 }

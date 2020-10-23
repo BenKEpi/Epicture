@@ -7,59 +7,59 @@
  */
 
 import React, { useState, useEffect, Component } from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
-import { Camera } from 'expo-camera';
-import * as Permissions from 'expo-permissions'
-import { Dimensions } from "react-native-web";
+import { Text, View, Button, Image, SafeAreaView } from 'react-native';
+import {Icon, IconElement} from '@ui-kitten/components';
+import * as ImagePicker from 'expo-image-picker'
 
 export default class CameraOpen extends Component {
 
-    constructor(props) {
-      super(props);
-      console.log('pute pute pute');
-      camera = null;
-      this.state = {
-        hasCameraPermission: null,
-      }
-    };
+    state = {
+      image: null,
+      picture: null,
+    }
 
-    /*async componentDidMount() {
-      const camera = await Permissions.askAsync(Permissions.CAMERA);
-      const audio = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
-      const hasCameraPermission = (camera.status === 'granted' && audio.status === 'granted');
-      this.setState({ hasCameraPermission });
-    };*/
+    async componentDiMount() {
+      const { status } = await ImagePicker.getCameraRollPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Sorry, we need camera roll permissions to make this work!');
+      }
+    }
+
+    pickImage = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+
+      console.log(result);
+
+      if (!result.cancelled) {
+        this.setState( { image: result.uri });
+      }
+    }
+
+    takePicture = async () => {
+      const {status} = await ImagePicker.getCameraPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Sorry cant take picture');
+      }
+      let result = await ImagePicker.launchCameraAsync();
+
+      if (!result.cancelled) {
+        this.setState( { picture : result.uri });
+      }
+    }
 
     render() {
-      const { hasCameraPermission } = this.state;
-
-      if (hasCameraPermission === null) {
-        return <View />;
-      } else if (hasCameraPermission === false) {
-        return <Text>Access to camera has been denied.</Text>;
-      }
-
       return (
-          <View>
-            <Camera
-                //style={styles.preview}
-                ref={camera => this.camera = camera}
-            />
-          </View>
+          <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Button title="Pick an image from camera roll" onPress={this.pickImage}/>
+            {this.state.image && <Image source={{ uri: this.state.image }} style={{ width: 200, height: 200 }} />}
+            <Button title="Take a photo" onPress={this.takePicture}/>
+            {this.state.picture && <Image source={{ uri: this.state.picture }} style={{ width: 200, height: 200 }} />}
+          </SafeAreaView>
       );
     };
 };
-
-/*const { width: winWidth, height: winHeight } = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-  preview: {
-    height: winHeight,
-    width: winWidth,
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    right: 0,
-    bottom: 0,
-  },
-});*/
