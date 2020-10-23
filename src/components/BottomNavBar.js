@@ -9,7 +9,7 @@
 import React from 'react';
 
 import {TopTitle} from "./gallery/galleryNavigation";
-import SearchComponent from './search';
+import SearchComponent from './search/search';
 import UploadComponent from './upload';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -27,7 +27,7 @@ export const BottomNavBar = () => (
     />
       <BottomTab.Screen
         name="Search"
-        component={UploadComponent}
+        component={SearchComponent}
         options={{title: 'Search', tabBarIcon: SearchIcon}}
       />
     <BottomTab.Screen

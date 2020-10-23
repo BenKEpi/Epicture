@@ -7,6 +7,7 @@ import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import * as eva from '@eva-design/eva';
+import { ThemeProvider } from "react-native-elements";
 
 import store from "./src/store/store";
 import RootComponents from "./src/components/root";
@@ -17,7 +18,9 @@ export default function App() {
       <ApplicationProvider {...eva} theme={eva.dark}>
         <IconRegistry icons={EvaIconsPack} />
         <SafeAreaProvider>
-          <RootComponents />
+          <ThemeProvider>
+            <RootComponents />
+          </ThemeProvider>
         </SafeAreaProvider>
       </ApplicationProvider>
     </Provider>

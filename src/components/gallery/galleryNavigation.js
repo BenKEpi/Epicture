@@ -12,7 +12,7 @@ import { Tab, TabBar, Layout, MenuItem, OverflowMenu, TopNavigation, TopNavigati
 
 import {SafeAreaView} from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
-import {TrendUp, Person, StarOut} from "../Icons"
+import {TrendUp, Person, StarOut, OptionIcon} from "../Icons"
 import GalleryComponent from "./gallery";
 import FavoriteComponent from "./favorite";
 import FeedComponent from "./feed";
@@ -68,7 +68,7 @@ export const TopTitle = () => {
   };
 
   const renderMenuAction = () => (
-    <TopNavigationAction icon={TrendUp} onPress={toggleMenu}/>
+    <TopNavigationAction icon={OptionIcon} onPress={toggleMenu}/>
   );
 
   const renderRightActions = () => (

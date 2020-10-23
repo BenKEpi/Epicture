@@ -25,6 +25,9 @@ export const SearchIcon = (style): IconElement => (
   <Icon {...style} name="search-outline" />
 );
 
+export const OptionIcon = (props): IconElement => (
+  <Icon {...props} name="options-outline" />
+);
 
 export const IconFavorited = (props): IconElement => (
   <Icon {...props} name="heart" />

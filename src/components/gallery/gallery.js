@@ -49,7 +49,7 @@ class GalleryComponent extends Component {
     if (this.state.isLoading) {
       return (
         <View>
-          <Spinner />
+          <Spinner style={styles.spinner} />
         </View>
       )
     } else {
@@ -73,6 +73,10 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     textAlign: 'center',
   },
+  spinner: {
+    width: 40,
+    height: 40,
+  }
 });
 
 const mapStateToProps = (state) => {
