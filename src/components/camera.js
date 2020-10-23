@@ -7,9 +7,18 @@
  */
 
 import React, { useState, useEffect, Component } from 'react';
-import { Text, View, Button, Image, SafeAreaView } from 'react-native';
-import {Icon, IconElement} from '@ui-kitten/components';
+import { Text, View, Image, SafeAreaView, StyleSheet } from 'react-native';
+import {Button, Icon, IconElement} from '@ui-kitten/components';
 import * as ImagePicker from 'expo-image-picker'
+
+
+const PhotoIcon = (style): IconElement => (
+    <Icon {...style} name="camera-outline"/>
+    );
+
+const UploadIcon = (style): IconElement => (
+    <Icon {...style} name="upload-outline"/>
+    );
 
 export default class CameraOpen extends Component {
 
@@ -55,11 +64,21 @@ export default class CameraOpen extends Component {
     render() {
       return (
           <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Button title="Pick an image from camera roll" onPress={this.pickImage}/>
+            <Button style={styles.button} accessoryLeft={UploadIcon} onPress={this.pickImage}>
+              Upload Image
+            </Button>
             {this.state.image && <Image source={{ uri: this.state.image }} style={{ width: 200, height: 200 }} />}
-            <Button title="Take a photo" onPress={this.takePicture}/>
+            <Button style={styles.button} accessoryLeft={PhotoIcon} onPress={this.takePicture}>
+              Take Photo
+            </Button>
             {this.state.picture && <Image source={{ uri: this.state.picture }} style={{ width: 200, height: 200 }} />}
           </SafeAreaView>
       );
     };
 };
+
+const styles = StyleSheet.create({
+  button: {
+    margin: 2,
+  },
+});
