@@ -33,22 +33,21 @@ module.exports = {
       return result.json();
     });
   },
-  uploadImage(authorization: {}) {
-
-    const formData = new FormData();
-    formData.append('image', authorization.base64);
-    formData.append('type', 'base64');
-    formData.append('name', 'CLAMOULAGA.png');
-    formData.append('title', 'branle');
-    formData.append('description', 'blc');
+  uploadImage(authorization: {}, accessToken) {
     return fetch('https://api.imgur.com/3/image', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Client-ID ' + env.clientId,
+        'Authorization': 'Bearer ' + accessToken,
       },
-      body: formData
+      body: JSON.stringify({
+        'image': authorization.base64,
+        'type': 'base64',
+        'name': 'CLAMOULAGA.png',
+        'title': 'branle',
+        'description': 'blc',
+      })
     }).then((responseData) => {
       console.log(responseData);
       return responseData.json()

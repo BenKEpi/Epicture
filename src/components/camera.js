@@ -12,6 +12,7 @@ import {Button, Icon, IconElement} from '@ui-kitten/components';
 import * as ImagePicker from 'expo-image-picker'
 import Api from '../api'
 import {retrySymbolicateLogNow} from "react-native/Libraries/LogBox/Data/LogBoxData";
+import {connect} from "react-redux";
 
 
 const PhotoIcon = (style): IconElement => (
@@ -22,7 +23,7 @@ const UploadIcon = (style): IconElement => (
     <Icon {...style} name="upload-outline"/>
     );
 
-export default class CameraOpen extends Component {
+class CameraOpen extends Component {
 
     state = {
       image: null,
@@ -50,7 +51,7 @@ export default class CameraOpen extends Component {
       if (!result.cancelled) {
         this.setState( { image: result.uri });
       }
-      Api.uploadImage(result).then(r => {console.log(r)})
+      Api.uploadImage(result, this.props.userInfos.params.access_token).then(r => {console.log(r)})
     }
 
     takePicture = async () => {
@@ -65,6 +66,8 @@ export default class CameraOpen extends Component {
         quality: 1,
         base64: true,
       });
+
+      Api.uploadImage(result, this.props.userInfos.params.access_token).then(r => {console.log(r)})
     }
 
     render() {
@@ -88,3 +91,13 @@ const styles = StyleSheet.create({
     margin: 'auto',
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    userInfos: state.userInfos,
+    username: state.username,
+    accountId: state.accountId,
+  };
+};
+
+export default connect(mapStateToProps)(CameraOpen);
