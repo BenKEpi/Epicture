@@ -11,9 +11,11 @@ import React from 'react';
 import {TopTitle} from "./gallery/galleryNavigation";
 import SearchComponent from './search/search';
 import UploadComponent from './upload';
+import ProfilComponent from "./profil/profil";
+
+import {HomeTabBar} from '../TabBar';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {HomeTabBar} from '../TabBar';
 import {SearchIcon, HomeIcon, ProfileIcon, UploadIcon} from "./Icons";
 
 const BottomTab = createBottomTabNavigator();
@@ -25,11 +27,11 @@ export const BottomNavBar = () => (
       component={TopTitle}
       options={{title: 'Home', tabBarIcon: HomeIcon}}
     />
-      <BottomTab.Screen
-        name="Search"
-        component={SearchComponent}
-        options={{title: 'Search', tabBarIcon: SearchIcon}}
-      />
+    <BottomTab.Screen
+      name="Search"
+      component={SearchComponent}
+      options={{title: 'Search', tabBarIcon: SearchIcon}}
+    />
     <BottomTab.Screen
       name="Upload"
       component={UploadComponent}
@@ -37,8 +39,8 @@ export const BottomNavBar = () => (
     />
     <BottomTab.Screen
       name="Settings"
-      component={SearchComponent}
-      options={{title: 'Settings', tabBarIcon: ProfileIcon}}
+      component={ProfilComponent}
+      options={{title: 'Profil', tabBarIcon: ProfileIcon}}
     />
   </BottomTab.Navigator>
 );

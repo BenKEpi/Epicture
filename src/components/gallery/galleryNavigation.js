@@ -14,7 +14,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import { createMaterialTopTabNavigator} from "@react-navigation/material-top-tabs";
 import {TrendUp, Person, StarOut, OptionIcon} from "../Icons"
 import GalleryComponent from "./gallery";
-import FavoriteComponent from "./favorite";
+import FavoriteComponent from "../profil/favorite";
 import FeedComponent from "./feed";
 
 import {IconFavorited} from "../Icons";
@@ -24,15 +24,12 @@ const TopTab = createMaterialTopTabNavigator();
 
 const TopTabBar = ({navigation, state}) => {
   return (
-    <View>
       <TabBar
         selectedIndex={state.index}
         onSelect={index => navigation.navigate(state.routeNames[index])}>
         <Tab title='Most Viral' />
         <Tab title='Feed' />
-        <Tab title='Favorite'/>
       </TabBar>
-    </View>
   )
 }
 
@@ -53,7 +50,6 @@ class TopBarGallery extends Component {
       >
         <TopTab.Screen name="Most Viral" component={GalleryComponent} />
         <TopTab.Screen name="Feed" component={FeedComponent} />
-        <TopTab.Screen name="Favorite" component={FavoriteComponent} />
       </TopTab.Navigator>
     )
   }
@@ -72,15 +68,13 @@ export const TopTitle = () => {
   );
 
   const renderRightActions = () => (
-    <Fragment>
-      <OverflowMenu
-        anchor={renderMenuAction}
-        visible={menuVisible}
-        onBackdropPress={toggleMenu}>
-        <MenuItem title='About'/>
-        <MenuItem title='Logout'/>
-      </OverflowMenu>
-    </Fragment>
+    <OverflowMenu
+      anchor={renderMenuAction}
+      visible={menuVisible}
+      onBackdropPress={toggleMenu}>
+      <MenuItem title='About'/>
+      <MenuItem title='Logout'/>
+    </OverflowMenu>
   );
 
   return (

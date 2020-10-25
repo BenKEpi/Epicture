@@ -9,11 +9,10 @@
 import React, {Component} from 'react';
 import Api from "../../api";
 import {View} from "react-native";
-import CardImageComponent from "./card";
+import CardImageComponent from "../card/card";
 import {List, Spinner} from "@ui-kitten/components";
-import {connect} from "react-redux";
 
-class FavoriteComponent extends Component {
+export default class PostsComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,9 +22,8 @@ class FavoriteComponent extends Component {
   }
 
   componentDidMount() {
-    Api.get('account/' + this.props.username + '/favorites/0')
+    Api.get('account/me/images')
       .then((responseData) => {
-        console.log(responseData);
         this.setState({data: responseData, isLoading: false});
       })
       .catch((error) => {
@@ -38,7 +36,7 @@ class FavoriteComponent extends Component {
   };
 
   render() {
-    if (this.state.isLoading) {
+    if (this.state.isLoading && this.state.data.data !== {}) {
       return (
         <View>
           <Spinner />
@@ -56,13 +54,3 @@ class FavoriteComponent extends Component {
     }
   }
 }
-
-const mapStateToProps = (state) => {
-  return {
-    userInfos: state.userInfos,
-    username: state.username,
-    accountId: state.accountId,
-  };
-};
-
-export default connect(mapStateToProps)(FavoriteComponent);

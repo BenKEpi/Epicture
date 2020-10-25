@@ -9,7 +9,7 @@
 import React, {Component} from 'react';
 import Api from "../../api";
 import {View} from "react-native";
-import CardImageComponent from "./card";
+import CardImageComponent from "../card/card";
 import {List, Spinner} from "@ui-kitten/components";
 import {connect} from "react-redux";
 

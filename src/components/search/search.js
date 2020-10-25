@@ -12,7 +12,7 @@ import {View} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {List, Text} from "@ui-kitten/components";
 import Api from "../../api";
-import CardImageComponent from "../gallery/card";
+import CardImageComponent from "../card/card";
 
 export default class SearchComponent extends Component {
   constructor(props) {
@@ -27,7 +27,6 @@ export default class SearchComponent extends Component {
   getSearch(search) {
     Api.get('gallery/search/?q=' + search)
       .then((responseData) => {
-        console.log(responseData);
         this.setState({data: responseData, isLoading: false});
       })
       .catch((error) => {
@@ -67,7 +66,6 @@ export default class SearchComponent extends Component {
             placeholder="Type Here..."
             onChangeText={this.updateSearch}
             value={this.state.search}
-            round='false'
             onSubmitEditing={(event) => this.getSearch(event.nativeEvent.text)}
           />
           <View>
