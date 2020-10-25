@@ -44,9 +44,9 @@ module.exports = {
       body: JSON.stringify({
         'image': authorization.base64,
         'type': 'base64',
-        'name': 'CLAMOULAGA.png',
-        'title': 'branle',
-        'description': 'blc',
+        'name': 'test.png',
+        'title': 'Test',
+        'description': 'Test',
       })
     }).then((responseData) => {
       console.log(responseData);
