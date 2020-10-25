@@ -75,7 +75,6 @@ class BottomCardComponent extends Component {
           }
         } else {
           if (value === 'up') {
-            console.log("WTF !")
             this.props.elem.ups -= 1;
           } else {
             this.props.elem.downs -= 1;

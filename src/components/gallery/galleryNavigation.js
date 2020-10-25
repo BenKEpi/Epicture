@@ -72,8 +72,8 @@ export const TopTitle = () => {
       anchor={renderMenuAction}
       visible={menuVisible}
       onBackdropPress={toggleMenu}>
-      <MenuItem title='About'/>
-      <MenuItem title='Logout'/>
+      <MenuItem title='Month'/>
+      <MenuItem title='Year'/>
     </OverflowMenu>
   );
 
