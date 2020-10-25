@@ -12,7 +12,7 @@ React Native
 
 # Structure
 
-Photo !
+![AppStruct](./assets/App.png)
 
 # Installation
 ```
