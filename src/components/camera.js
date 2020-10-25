@@ -10,6 +10,8 @@ import React, { useState, useEffect, Component } from 'react';
 import { Text, View, Image, SafeAreaView, StyleSheet } from 'react-native';
 import {Button, Icon, IconElement} from '@ui-kitten/components';
 import * as ImagePicker from 'expo-image-picker'
+import Api from '../api'
+import {retrySymbolicateLogNow} from "react-native/Libraries/LogBox/Data/LogBoxData";
 
 
 const PhotoIcon = (style): IconElement => (
@@ -25,6 +27,8 @@ export default class CameraOpen extends Component {
     state = {
       image: null,
       picture: null,
+      data: {},
+      isUpload: false,
     }
 
     async componentDiMount() {
@@ -40,25 +44,27 @@ export default class CameraOpen extends Component {
         allowsEditing: true,
         aspect: [4, 3],
         quality: 1,
+        base64: true,
       });
-
-      console.log(result);
-
+      //console.log(result);
       if (!result.cancelled) {
         this.setState( { image: result.uri });
       }
+      Api.uploadImage(result).then(r => {console.log(r)})
     }
 
     takePicture = async () => {
-      const {status} = await ImagePicker.getCameraPermissionsAsync();
+      const { status } = await ImagePicker.getCameraPermissionsAsync();
       if (status !== 'granted') {
         alert('Sorry cant take picture');
       }
-      let result = await ImagePicker.launchCameraAsync();
-
-      if (!result.cancelled) {
-        this.setState( { picture : result.uri });
-      }
+      let result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+        base64: true,
+      });
     }
 
     render() {
@@ -79,6 +85,6 @@ export default class CameraOpen extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    margin: 2,
+    margin: 'auto',
   },
 });

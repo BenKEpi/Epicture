@@ -32,5 +32,29 @@ module.exports = {
     }).then((result) => {
       return result.json();
     });
+  },
+  uploadImage(authorization: {}) {
+
+    const formData = new FormData();
+    formData.append('image', authorization.base64);
+    formData.append('type', 'base64');
+    formData.append('name', 'CLAMOULAGA.png');
+    formData.append('title', 'branle');
+    formData.append('description', 'blc');
+    return fetch('https://api.imgur.com/3/image', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Client-ID ' + env.clientId,
+      },
+      body: formData
+    }).then((responseData) => {
+      console.log(responseData);
+      return responseData.json()
+    }).catch((error) => {
+      console.log(error)
+      return error
+    })
   }
 };
